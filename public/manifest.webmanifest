@@ -1,0 +1,24 @@
+{
+  "name": "أكاديمية سارة العربي | تأسيس وحساب ذهني",
+  "short_name": "سارة العربي",
+  "description": "حصص مباشرة أونلاين، حساب ذهني وسوروبان، تأسيس قراءة وكتابة، ومكتبة مذكرات وشيتات.",
+  "id": "/?source=pwa",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "dir": "rtl",
+  "lang": "ar",
+  "background_color": "#0f172a",
+  "theme_color": "#f59e0b",
+  "categories": ["education", "productivity"],
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "الفصول المباشرة", "short_name": "مباشر", "url": "/?view=live", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "دوراتي", "short_name": "دوراتي", "url": "/?view=my-courses", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

@@ -1,0 +1,309 @@
+@import "tailwindcss";
+
+/* ============================================================
+   أكاديمية سارة العربي — نظام تصميم مزدوج كامل الفصل
+   الوضع النهاري (الأساسي) = أسطح فاتحة + نص داكن
+   الوضع الليلي (.dark)     = أسطح داكنة + نص فاتح
+   كل متغيّر معرّف مرتين: مرة :root ومرة .dark — لا تداخل إطلاقاً
+   ============================================================ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Tajawal', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+:root {
+  color-scheme: light;
+  /* سطوح */
+  --bg-page: #f6f8fc;
+  --bg-elevated: #ffffff;
+  --bg-subtle: #eef2f7;
+  --bg-inset: #e9eef5;
+  --bg-header: rgba(255, 255, 255, 0.82);
+  --glass: rgba(255, 255, 255, 0.72);
+  /* نصوص */
+  --ink: #0c1a30;
+  --ink-soft: #46556b;
+  --ink-faint: #64748b;
+  /* حدود وظلال */
+  --line: rgba(15, 30, 60, 0.10);
+  --line-strong: rgba(15, 30, 60, 0.16);
+  --shadow-card: 0 1px 2px rgba(13, 30, 58, 0.05), 0 12px 32px -12px rgba(13, 30, 58, 0.14);
+  --shadow-pop: 0 24px 60px -20px rgba(13, 30, 58, 0.28);
+  /* هوية */
+  --brand: #d97706;
+  --brand-deep: #b45309;
+  --brand-soft: #fff7ed;
+  --accent: #0ea5e9;
+  --accent-soft: #f0f9ff;
+  --hero-a: #fffdf8;
+  --hero-b: #fdf3e3;
+  --hero-c: #eef6ff;
+  /* حالات */
+  --ok: #059669;
+  --warn: #d97706;
+  --bad: #e11d48;
+}
+
+.dark {
+  color-scheme: dark;
+  --bg-page: #060b18;
+  --bg-elevated: #0d1526;
+  --bg-subtle: #111c31;
+  --bg-inset: #16233c;
+  --bg-header: rgba(8, 13, 26, 0.82);
+  --glass: rgba(13, 21, 38, 0.72);
+  --ink: #eaf1fb;
+  --ink-soft: #a9b7cc;
+  --ink-faint: #7c8aa3;
+  --line: rgba(148, 163, 184, 0.16);
+  --line-strong: rgba(148, 163, 184, 0.28);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 16px 40px -16px rgba(0, 0, 0, 0.55);
+  --shadow-pop: 0 30px 70px -20px rgba(0, 0, 0, 0.7);
+  --brand: #fbbf24;
+  --brand-deep: #f59e0b;
+  --brand-soft: rgba(251, 191, 36, 0.10);
+  --accent: #38bdf8;
+  --accent-soft: rgba(56, 189, 248, 0.10);
+  --hero-a: #060b18;
+  --hero-b: #0a1324;
+  --hero-c: #0b1a30;
+  --ok: #34d399;
+  --warn: #fbbf24;
+  --bad: #fb7185;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-page);
+    color: var(--ink);
+    transition: background-color .35s ease, color .35s ease;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: color-mix(in srgb, var(--brand) 30%, transparent); }
+}
+
+/* ============================================================
+   طبقة الرمز الدلالي (Semantic Layer) — تُعاد تسميته تلقائياً
+   حسب الوضع، فلا يحتاج أي مكوّن إلى إعادة كتابة أصنافه.
+   ============================================================ */
+
+/* --- الأسطح الداكنة الصلبة -> سطح الوضع الحالي الفعلي --- */
+html:not(.dark) .bg-slate-950,
+html:not(.dark) .bg-slate-900,
+html:not(.dark) .bg-gray-950,
+html:not(.dark) .bg-gray-900,
+html:not(.dark) .bg-zinc-900,
+html:not(.dark) .bg-neutral-900 {
+  background-color: var(--bg-elevated) !important;
+  color: var(--ink) !important;
+  border-color: var(--line) !important;
+  box-shadow: var(--shadow-card) !important;
+}
+html:not(.dark) .bg-slate-800,
+html:not(.dark) .bg-gray-800,
+html:not(.dark) .bg-zinc-800 {
+  background-color: var(--bg-subtle) !important;
+  color: var(--ink) !important;
+  border-color: var(--line) !important;
+  box-shadow: none !important;
+}
+html:not(.dark) .bg-slate-700,
+html:not(.dark) .bg-gray-700 {
+  background-color: var(--bg-inset) !important;
+  color: var(--ink) !important;
+  border-color: var(--line) !important;
+  box-shadow: none !important;
+}
+
+/* الشفافة غير الأقنعة -> زجاجية نهارية؛ وفي الليل تبقى كما هي */
+html:not(.dark) [class*="bg-slate-900/"]:not(.fixed):not([class*="backdrop"]),
+html:not(.dark) [class*="bg-slate-950/"]:not(.fixed):not([class*="backdrop"]),
+html:not(.dark) [class*="bg-gray-900/"]:not(.fixed),
+html:not(.dark) [class*="bg-black/"]:not(.fixed) {
+  background-color: var(--glass) !important;
+  color: var(--ink) !important;
+  border-color: var(--line) !important;
+}
+
+/* --- النصوص --- */
+html:not(.dark) .text-white,
+html:not(.dark) .text-slate-50, html:not(.dark) .text-slate-100, html:not(.dark) .text-slate-200,
+html:not(.dark) .text-gray-50, html:not(.dark) .text-gray-100, html:not(.dark) .text-gray-200 {
+  color: var(--ink) !important;
+}
+html:not(.dark) .text-slate-300, html:not(.dark) .text-slate-400,
+html:not(.dark) .text-gray-300, html:not(.dark) .text-gray-400 {
+  color: var(--ink-soft) !important;
+}
+html:not(.dark) .text-slate-500 { color: var(--ink-faint) !important; }
+html:not(.dark) .text-cyan-200, html:not(.dark) .text-cyan-300, html:not(.dark) .text-teal-300 { color: #0e7490 !important; }
+html:not(.dark) .text-indigo-200, html:not(.dark) .text-indigo-300 { color: #4338ca !important; }
+html:not(.dark) .text-purple-200, html:not(.dark) .text-purple-300 { color: #7e22ce !important; }
+html:not(.dark) .text-pink-300 { color: #be185d !important; }
+html:not(.dark) .text-rose-200, html:not(.dark) .text-rose-300 { color: #be123c !important; }
+html:not(.dark) .text-orange-300 { color: #c2410c !important; }
+html:not(.dark) .text-amber-200, html:not(.dark) .text-amber-300 { color: #b45309 !important; }
+html:not(.dark) .text-yellow-300 { color: #a16207 !important; }
+html:not(.dark) .text-green-300 { color: #15803d !important; }
+html:not(.dark) .text-emerald-200, html:not(.dark) .text-emerald-300 { color: #047857 !important; }
+html:not(.dark) .text-sky-200, html:not(.dark) .text-sky-300 { color: #0369a1 !important; }
+html:not(.dark) .text-blue-300 { color: #1d4ed8 !important; }
+html:not(.dark) .text-violet-300 { color: #6d28d9 !important; }
+
+/* --- الحدود --- */
+html:not(.dark) .border-white\/10, html:not(.dark) .border-white\/15, html:not(.dark) .border-white\/20,
+html:not(.dark) .border-slate-700, html:not(.dark) .border-slate-800, html:not(.dark) .border-slate-800\/80,
+html:not(.dark) .border-gray-800, html:not(.dark) .border-gray-700 {
+  border-color: var(--line) !important;
+}
+html:not(.dark) .divide-slate-800 > * + *, html:not(.dark) .divide-gray-800 > * + * {
+  border-color: var(--line) !important;
+}
+
+/* --- التدرجات الداكنة -> تدرج وضع الصفحة --- */
+html:not(.dark) .from-slate-950, html:not(.dark) .from-slate-900, html:not(.dark) .via-slate-900 {
+  --tw-gradient-from: var(--hero-b) var(--tw-gradient-from-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from-position), var(--tw-gradient-to) !important;
+}
+html:not(.dark) .to-slate-950, html:not(.dark) .to-slate-900 {
+  --tw-gradient-to: var(--hero-a) var(--tw-gradient-to-position) !important;
+}
+
+/* ============================================================
+   استثناءات ذكية: الأسطح المقصود بقاؤها داكنة في الوضعين
+   (مسرح البث المباشر، مشغّل الفيديو، السبورة، الأشرطة السينمائية)
+   تُوسم يدوياً بالكلاس media-dark — ولا تلمسها طبقة النهار.
+   ============================================================ */
+html:not(.dark) .media-dark,
+html:not(.dark) .media-dark * {
+  color: #dbe7f5;
+}
+html:not(.dark) div.media-dark,
+html:not(.dark) section.media-dark,
+html:not(.dark) canvas.media-dark {
+  background-color: #0a1120 !important;
+  box-shadow: none !important;
+}
+html:not(.dark) .media-dark .text-white { color: #f8fafc !important; }
+html:not(.dark) .media-dark .text-slate-100, html:not(.dark) .media-dark .text-slate-200 { color: #e2e8f0 !important; }
+html:not(.dark) .media-dark .text-slate-300, html:not(.dark) .media-dark .text-slate-400 { color: #9fb0c8 !important; }
+html:not(.dark) .media-dark .bg-slate-900, html:not(.dark) .media-dark .bg-slate-950 {
+  background-color: rgba(10, 17, 32, 0.85) !important;
+  box-shadow: none !important;
+}
+html:not(.dark) .media-dark [class*="bg-slate-900/"],
+html:not(.dark) .media-dark [class*="bg-slate-950/"],
+html:not(.dark) .media-dark [class*="bg-black/"] {
+  background-color: rgba(6, 11, 22, 0.72) !important;
+  color: inherit;
+}
+html:not(.dark) .media-dark .border-slate-800, html:not(.dark) .media-dark .border-slate-700 {
+  border-color: rgba(148, 163, 184, 0.22) !important;
+}
+/* الأزرار داخل المسرح الداكن تبقى كما صُممت */
+html:not(.dark) .media-dark button.bg-slate-800,
+html:not(.dark) .media-dark button.bg-slate-700 {
+  background-color: #1c2a44 !important;
+  color: #e2e8f0 !important;
+  border: 1px solid rgba(148, 163, 184, 0.25) !important;
+}
+html:not(.dark) .media-dark button.bg-slate-800 svg,
+html:not(.dark) .media-dark button.bg-slate-700 svg { color: unset !important; }
+
+/* أزرار داكنة صلبة داخل الأسطح النهارية -> زر داكن أنيق (contrast مقصود) */
+html:not(.dark) button.bg-slate-900, html:not(.dark) a.bg-slate-900,
+html:not(.dark) button.bg-slate-950, html:not(.dark) a.bg-slate-950 {
+  background-color: #0f1e38 !important;
+  color: #ffffff !important;
+  box-shadow: 0 8px 20px -8px rgba(15,30,56,.45) !important;
+}
+html:not(.dark) button.bg-slate-900 .text-white, html:not(.dark) a.bg-slate-900 .text-white,
+html:not(.dark) button.bg-slate-950 .text-white { color: #ffffff !important; }
+
+/* أزرار رمادية ثانوية -> أزرار نهارية واضحة */
+html:not(.dark) button.bg-slate-800, html:not(.dark) button.bg-slate-700 {
+  background-color: #e8edf5 !important;
+  color: #0f1e38 !important;
+  border: 1px solid var(--line-strong) !important;
+  box-shadow: none !important;
+}
+html:not(.dark) button.bg-slate-800 svg, html:not(.dark) button.bg-slate-700 svg { color: #0f1e38 !important; }
+@media (hover:hover) {
+  html:not(.dark) button.hover\:bg-slate-800:hover,
+  html:not(.dark) button.hover\:bg-slate-700:hover { background-color: #dbe3ee !important; }
+}
+
+/* شارات داكنة صغيرة تبقى داكنة بشكل متعمد */
+html:not(.dark) span.bg-slate-900, html:not(.dark) span.bg-slate-950,
+html:not(.dark) div.bg-slate-950.border, html:not(.dark) code.bg-slate-900 {
+  background-color: #0f1e38 !important;
+  color: #f8fafc !important;
+  box-shadow: none !important;
+}
+html:not(.dark) span.bg-slate-900 *, html:not(.dark) span.bg-slate-950 * { color: #f8fafc !important; }
+
+/* ظلال سوداء ثقيلة -> ظلال الوضع الحالي */
+html:not(.dark) [class*="shadow-black"] { box-shadow: var(--shadow-card) !important; }
+
+/* ============================================================
+   لمسات عصرية حديثة (تعمل في الوضعين عبر المتغيرات)
+   ============================================================ */
+.glass-panel {
+  background: var(--glass);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+}
+.hero-wash {
+  background:
+    radial-gradient(1200px 500px at 85% -10%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 60%),
+    radial-gradient(900px 420px at 10% 0%, color-mix(in srgb, var(--brand) 16%, transparent), transparent 55%),
+    linear-gradient(160deg, var(--hero-a), var(--hero-b) 55%, var(--hero-c));
+}
+.card-hover { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+.card-hover:hover { transform: translateY(-3px); box-shadow: var(--shadow-pop); border-color: var(--line-strong) !important; }
+.brand-ring { box-shadow: 0 0 0 1px var(--line), 0 12px 30px -12px color-mix(in srgb, var(--brand) 40%, transparent); }
+.live-dot { position: relative; }
+.live-dot::before {
+  content: ""; position: absolute; inset: -4px; border-radius: 9999px;
+  background: currentColor; opacity: .35; animation: livePulse 1.6s ease-out infinite;
+}
+@keyframes livePulse { 0% { transform: scale(.6); opacity:.5 } 100% { transform: scale(1.8); opacity:0 } }
+
+/* Scrollbars عصرية */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--ink-faint) 45%, transparent); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--ink-faint) 70%, transparent); }
+
+/* ============================================================
+   توحيد هوية لوحات التحكم (المعلمة/الإدارة/الطالب) في الوضع النهاري:
+   درجات amber/cyan/emerald الفاتحة المصممة للوضع الداكن تُحاكى
+   إلى نظيراتها العميقة المقروءة فوق الأسطح الفاتحة — بلا تعديل JSX.
+   ============================================================ */
+html:not(.dark) .text-amber-200, html:not(.dark) .text-amber-300 { color: #b45309 !important; }
+html:not(.dark) .text-amber-400 { color: #d97706 !important; }
+html:not(.dark) .text-cyan-200, html:not(.dark) .text-cyan-300, html:not(.dark) .text-cyan-400 { color: #0e7490 !important; }
+html:not(.dark) .text-teal-200, html:not(.dark) .text-teal-300 { color: #0f766e !important; }
+html:not(.dark) .text-emerald-200, html:not(.dark) .text-emerald-300, html:not(.dark) .text-emerald-400 { color: #047857 !important; }
+html:not(.dark) .text-sky-200, html:not(.dark) .text-sky-300, html:not(.dark) .text-sky-400 { color: #0369a1 !important; }
+html:not(.dark) .text-violet-300, html:not(.dark) .text-violet-400 { color: #6d28d9 !important; }
+html:not(.dark) .text-purple-300, html:not(.dark) .text-purple-400 { color: #7e22ce !important; }
+html:not(.dark) .text-indigo-300, html:not(.dark) .text-indigo-400 { color: #4338ca !important; }
+html:not(.dark) .text-rose-200, html:not(.dark) .text-rose-300, html:not(.dark) .text-rose-400 { color: #be123c !important; }
+html:not(.dark) .text-pink-300, html:not(.dark) .text-pink-400 { color: #be185d !important; }
+html:not(.dark) .text-orange-300, html:not(.dark) .text-orange-400 { color: #c2410c !important; }
+html:not(.dark) .text-yellow-200, html:not(.dark) .text-yellow-300 { color: #a16207 !important; }
+html:not(.dark) .text-green-200, html:not(.dark) .text-green-300 { color: #15803d !important; }
+html:not(.dark) .text-blue-200, html:not(.dark) .text-blue-300 { color: #1d4ed8 !important; }
+/* خلفيات التدرج الذهبية للأزرار النشطة: النص يبقى داكناً فوقها عمداً (تباين مقصود) */
+html:not(.dark) [class*="from-amber-400"], html:not(.dark) [class*="to-orange-500"] { color: #ffffff !important; }
+
+/* احترام تقليل الحركة */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
